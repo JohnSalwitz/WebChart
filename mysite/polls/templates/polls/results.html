@@ -1,0 +1,39 @@
+
+<h1>{{ question.question_text }}</h1>
+
+<ul>
+{% for choice in question.choice_set.all %}
+    <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+{% endfor %}
+</ul>
+
+<a href="{% url 'polls:detail' question.id %}">Vote again?</a>
+
+
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("button").click(function(){
+        $.getJSON("demo_ajax_json.js", function(result){
+
+            //$.each(result, function(i, field){
+            //    $("div").append(field + " ");
+            //});
+        });
+    });
+});
+</script>
+</head>
+
+<body>
+
+<button>Get JSON data</button>
+
+<div></div>
+
+</body>
+</html>
+
+
+</html>

@@ -1,0 +1,26 @@
+Migrations are very powerful and let you change your models over time, as you develop your project, without the need to delete your database or tables and make new ones - it specializes in upgrading your database live, without losing data. We’ll cover them in more depth in a later part of the tutorial, but for now, remember the three-step guide to making model changes:
+
+To Change your models (in models.py).
+    Run python manage.py makemigrations to create migrations for those changes
+    Run python manage.py migrate to apply those changes to the database.
+
+
+
+
+
+You can't just fire up python and check things, django doesn't know what project you want to work on.
+
+You have to do one of these things:
+    Use python manage.py shell
+    Use django-admin.py shell --settings=mysite.settings (or whatever settings module you use)
+    setup_environ(settings)
+
+
+To Run Server:
+    $python manage.py runserver
+
+To Run Tests:
+    $python manage.py test <application>
+
+Admin...
+http://127.0.0.1:8000/admin/
