@@ -13,7 +13,7 @@ class Question(models.Model):
 
     def was_published_recently(self):
         return self.pub_date >= timezone.now() - datetime.timedelta(days=1) and \
-               self.pub_date <= timezone.now()
+            self.pub_date <= timezone.now()
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -22,3 +22,10 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.choice_text
+
+
+class DAU(models.Model):
+    date = models.DateField('date')
+    active_users = models.IntegerField('actives', default = 0)
+    def __str__(self):
+        return "DATE: " + str(self.date) + "  Actives:"  + str(self.active_users)

@@ -1,13 +1,12 @@
 
 from django.contrib import admin
-from .models import Question
+from .models import DAU
 
-
-class QuestionAdmin(admin.ModelAdmin):
+class DAUAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,               {'fields': ['question_text']}),
-        ('Date information', {'fields': ['pub_date']}),
+        ('Date',               {'fields': ['date']}),
+        ('Active Users',       {'fields': ['active_users']}),
     ]
 
-admin.site.register(Question, QuestionAdmin)
+admin.site.register(DAU, DAUAdmin)
 

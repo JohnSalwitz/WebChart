@@ -29,7 +29,7 @@ function ChartPlus(source_url, div_target) {
         clonedDiv.find(".chart-title").html( title );
 
         // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(clonedDiv.find(".panel-body")[0]);
+        var chart = new google.visualization.LineChart(clonedDiv.find(".panel-body")[0]);
         chart.draw(data, {width: 600, height: 400});
     }
 

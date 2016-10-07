@@ -8,9 +8,8 @@ from django.utils import timezone
 from .google_chart import google_graph
 
 import json
-import collections
 
-from .models import Choice, Question
+from .models import Choice, Question, DAU
 
 class IndexView(generic.ListView):
     template_name = 'polls/index.html'
@@ -62,7 +61,6 @@ def vote(request, question_id):
 
 
 def my_json(request, question_id):
-    data = {'foo': 'bar', 'hello': 'world'}
     qset = Question.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
     qdict = {}
     i = 0
@@ -74,7 +72,7 @@ def my_json(request, question_id):
 
 
 # Example of input data...
-col_def = [("Topping", "string"), ("Slices",  "number")]
+pizza_col_def = [("Topping", "string"), ("Slices",  "number")]
 
 my_rows = [
             ("Mushrooms", 2),
@@ -83,21 +81,31 @@ my_rows = [
             ("Zucchini", 2)
          ]
 
+# Example of input data...
+dau_col_def = [("Date", "string"), ("Users",  "number")]
+
 def my_json(request, question_id):
     json = "{}"
 
     if question_id == "1":
-        gtable = google_graph.GoogleGraph("Pizza Chart", col_def)
+        gtable = google_graph.GoogleGraph("Pizza Chart", pizza_col_def)
         for row in my_rows:
             gtable.add_row(row)
         json = gtable.to_json()
-
 
     if question_id == "2":
-        gtable = google_graph.GoogleGraph("Crusty Chart", col_def)
+        gtable = google_graph.GoogleGraph("Crusty Chart", pizza_col_def)
         for row in my_rows:
             gtable.add_row(row)
         json = gtable.to_json()
 
+    if question_id == "3":
+        gtable = google_graph.GoogleGraph("Daily Active Users", dau_col_def)
+        qset = DAU.objects.all()
+        for q in qset:
+            row = (str(q.date), q.active_users)
+            gtable.add_row(row)
+        json = gtable.to_json()
+        print(json)
 
     return HttpResponse(json, content_type='application/json')

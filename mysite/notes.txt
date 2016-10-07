@@ -1,11 +1,3 @@
-Migrations are very powerful and let you change your models over time, as you develop your project, without the need to delete your database or tables and make new ones - it specializes in upgrading your database live, without losing data. We’ll cover them in more depth in a later part of the tutorial, but for now, remember the three-step guide to making model changes:
-
-To Change your models (in models.py).
-    Run python manage.py makemigrations to create migrations for those changes
-    Run python manage.py migrate to apply those changes to the database.
-
-
-
 
 
 You can't just fire up python and check things, django doesn't know what project you want to work on.
@@ -24,3 +16,25 @@ To Run Tests:
 
 Admin...
 http://127.0.0.1:8000/admin/
+
+
+
+Now Django knows to include the polls app. Let’s run another command:
+
+$ python manage.py makemigrations polls
+
+Does the migrations...
+$python manage.py sqlmigrate polls 0001
+
+Now, run migrate again to create those model tables in your database:
+
+$ python manage.py migrate
+
+
+Migrations are very powerful and let you change your models over time,
+ as you develop your project, without the need to delete your database or tables and make new ones -
+ it specializes in upgrading your database live, without losing data.
+
+Change your models (in models.py).
+python manage.py makemigrations   --  to create migrations for those change
+python manage.py migrate  --- to apply those changes to the database.
