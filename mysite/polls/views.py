@@ -8,6 +8,7 @@ from django.utils import timezone
 from .google_chart import google_graph
 
 import json
+from datetime import date
 
 from .models import Choice, Question, DAU
 
@@ -58,54 +59,55 @@ def vote(request, question_id):
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 
 
+pizza_col_def = [("Topping", "string"), ("Slices", "number")]
 
+pizza_rows = [
+    ("Mushrooms", 2),
+    ("Onions", 3),
+    ("Olives", 1),
+    ("Zucchini", 2)
+]
 
-def my_json(request, question_id):
-    qset = Question.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
-    qdict = {}
-    i = 0
-    for q in qset:
-        qdict[i] = str(q)
-        print(q)
-        i += 1
-    return HttpResponse(json.dumps(qdict), content_type='application/json')
+lifespan_col_def = [("Person", "string"), ("BornDate", "date")]
 
-
-# Example of input data...
-pizza_col_def = [("Topping", "string"), ("Slices",  "number")]
-
-my_rows = [
-            ("Mushrooms", 2),
-            ("Onions", 3),
-            ("Olives", 5),
-            ("Zucchini", 2)
-         ]
+lifespan_rows = [
+    ("Joe", date(2010, 10, 30)),
+    ("Bob", date(2014, 11, 30)),
+    ("Frank", date(2020, 9, 30)),
+    ("Mark", date(2022, 7, 5))
+]
 
 # Example of input data...
-dau_col_def = [("Date", "string"), ("Users",  "number")]
+dau_col_def = [("Date", "date"), ("Users",  "number")]
 
 def my_json(request, question_id):
     json = "{}"
 
     if question_id == "1":
-        gtable = google_graph.GoogleGraph("Pizza Chart", pizza_col_def)
-        for row in my_rows:
+        header = {"title": "Pizza", "subtotal": str(len(pizza_rows)) + " pieces"}
+        gtable = google_graph.GoogleGraph(header, pizza_col_def)
+        for row in pizza_rows:
             gtable.add_row(row)
         json = gtable.to_json()
 
     if question_id == "2":
-        gtable = google_graph.GoogleGraph("Crusty Chart", pizza_col_def)
-        for row in my_rows:
+        latest_date = max([d[1] for d in lifespan_rows])
+        header = {"title": "Lifespans", "subtotal": "latest: " + str(latest_date)}
+        gtable = google_graph.GoogleGraph(header, lifespan_col_def)
+        for row in lifespan_rows:
             gtable.add_row(row)
         json = gtable.to_json()
 
     if question_id == "3":
-        gtable = google_graph.GoogleGraph("Daily Active Users", dau_col_def)
         qset = DAU.objects.all()
+        avg = "No Users"
+        if len(qset) > 0:
+            avg = "Average: {0}".format(sum([q.active_users for q in qset]) / len(qset))
+        header = {"title": "DAU", "subtotal": avg}
+        gtable = google_graph.GoogleGraph(header, dau_col_def)
         for q in qset:
-            row = (str(q.date), q.active_users)
+            row = (q.date, q.active_users)
             gtable.add_row(row)
         json = gtable.to_json()
-        print(json)
 
     return HttpResponse(json, content_type='application/json')

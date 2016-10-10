@@ -18,7 +18,6 @@ Admin...
 http://127.0.0.1:8000/admin/
 
 
-
 Now Django knows to include the polls app. Let’s run another command:
 
 $ python manage.py makemigrations polls

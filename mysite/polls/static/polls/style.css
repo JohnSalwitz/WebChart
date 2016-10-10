@@ -3,14 +3,13 @@ li a {
 }
 
 body {
-    background-image: url("images/IMG_2717.jpg");
-    background-color: #cccccc;
-    background-repeat: no-repeat;
-    padding:35px;
-    background-origin: content-box;
 }
 
-chart_box_template {
-    width: 100px;
-    background-color: yellow;
+.chart-box {
+    background-color: grey;
+    width: 550px;
+}
+
+.chart-title, .chart-subtotal {
+    color: white;
 }

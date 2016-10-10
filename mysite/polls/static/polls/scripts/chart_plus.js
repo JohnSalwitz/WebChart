@@ -3,10 +3,11 @@
 google.charts.load('current', {'packages':['corechart']});
 
 // creates a single chart in the "div_target"
-function ChartPlus(source_url, div_target) {
+function ChartPlus(source_url, div_target, chart_type) {
 
     this.url = source_url
     this.div_target = div_target
+    this.chart_type = chart_type
     var self = this
 
     this.drawChart = function() {
@@ -22,15 +23,26 @@ function ChartPlus(source_url, div_target) {
 
         var clonedDiv = $('#chart_box_template').clone();
         clonedDiv.attr("id", self.div_target);
-        clonedDiv.show();
+        //clonedDiv.show();
         $('#charts').append(clonedDiv);
 
-        title = json.title
-        clonedDiv.find(".chart-title").html( title );
+        if (json.header.title != undefined)
+            clonedDiv.find(".chart-title").html(json.header.title );
+
+        if (json.header.subtotal != undefined)
+            clonedDiv.find(".chart-subtotal").html(json.header.subtotal );
 
         // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.LineChart(clonedDiv.find(".panel-body")[0]);
-        chart.draw(data, {width: 600, height: 400});
+        if (self.chart_type == "line") {
+            var chart = new google.visualization.LineChart(clonedDiv.find(".panel-body")[0]);
+        }
+        else if (self.chart_type == "pie") {
+            var chart = new google.visualization.PieChart(clonedDiv.find(".panel-body")[0]);
+        }
+        else if (self.chart_type == "bar") {
+            var chart = new google.visualization.BarChart(clonedDiv.find(".panel-body")[0]);
+        }
+        chart.draw(data, {width: 500, height: 400});
     }
 
     google.charts.setOnLoadCallback(this.drawChart);

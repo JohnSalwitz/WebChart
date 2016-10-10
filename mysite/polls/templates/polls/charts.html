@@ -2,6 +2,10 @@
 
 <html>
   <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <!-- Load JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!--Load the AJAX API-->
@@ -15,29 +19,35 @@
     {% load static %}
     <script type="text/javascript" src="{% static 'polls/scripts/chart_plus.js' %}"></script>
 
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}" />
+
     <script type="text/javascript">
-        new ChartPlus("../1/my_json/", "chart_1")
-        new ChartPlus("../2/my_json/", "chart_2")
-        new ChartPlus("../3/my_json/", "chart_3")
+        new ChartPlus("../1/my_json/", "chart_1", "pie")
+        new ChartPlus("../2/my_json/", "chart_2", "bar")
+        new ChartPlus("../3/my_json/", "chart_3", "line")
     </script>
 
   </head>
 
+  <!--Div that will hold the charts-->
   <body>
-      <div class="container">
-        <h2>Dash Board</h2>
-        <div id="charts">
+    <div class="container-fluid">
+        <div id="charts" class="row">
             <!--Div that will hold the pie chart-->
         </div>
       </div>
   </body>
 
-  <div id="chart_box_template" style="display: none">
-      <h3 class = "chart-title" >A Chart</h3>
-      <div class="panel panel-default">
-          <div class="panel-body"></div>
+  <!--Div used to hold templates-->
+  <div style="display: none">
+      <div id="chart_box_template" class="chart-box col-sm-6">
+          <center><h3 class = "chart-title" >A Chart</h3></center>
+          <div class="panel panel-default">
+              <div class="panel-body"></div>
+          </div>
+          <center><h3 class = "chart-subtotal" > 55%</h3></center>
       </div>
   </div>
-
 </html>
 
